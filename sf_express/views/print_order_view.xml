@@ -1,0 +1,102 @@
+<odoo>
+    <data>
+
+        <record id="print_order_tree_view" model="ir.ui.view">
+            <field name="name">print_order_tree_view</field>
+            <field name="model">print.order</field>
+            <field name="arch" type="xml">
+                <tree string="" create="0" delete="0">
+                    <field name="carrier_id"/>
+                    <field name="name"/>
+                    <field name="mailno"/>
+                    <field name="filter_result"/>
+                    <field name="payment_method"/>
+                    <field name="express_order_type"/>
+                    <field name="is_print"/>
+                    <field name="print_num"/>
+                    <field name="remark"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="print_order_form_view">
+            <field name="name">print_order_form_view</field>
+            <field name="model">print.order</field>
+            <field name="arch" type="xml">
+                <form duplicate="false" create="0" edit="0">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="mailno"/>
+                                <field name="origincode"/>
+                                <field name="payment_method"/>
+                                <field name="is_print"/>
+                                <field name="print_num"/>
+                            </group>
+                            <group>
+                                <field name="carrier_id"/>
+                                <field name="filter_result"/>
+                                <field name="destcode"/>
+                                <field name="express_order_type"/>
+                                <field name="remark"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="物流信息">
+                                <field name="info_id" readonly="1">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="name"/>
+                                        <field name="description"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="print_order_search" model="ir.ui.view">
+            <field name="name">print_order_search</field>
+            <field name="model">print.order</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <field name="carrier_id"/>
+                    <field name="name"/>
+                    <field name="mailno"/>
+                    <field name="remark"/>
+                    <filter name="not_print" string="未打印" domain="[('is_print', '=',False)]"/>
+                    <filter string="已打印" domain="[('is_print', '=',True)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="订单号" domain="[]" context="{'group_by':'name'}"/>
+                        <filter string="快递" domain="[]" context="{'group_by':'carrier_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="print_order_list_action">
+            <field name="name">电子面单</field>
+            <field name="res_model">print.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_not_print':1}</field>
+            <field name="help">
+                没有需要打印的订单
+            </field>
+        </record>
+
+        <menuitem id="print_order_menu" name="电子面单" parent="stock.menu_stock_warehouse_mgmt"
+                  action="print_order_list_action" sequence="6"/>
+
+    </data>
+</odoo>

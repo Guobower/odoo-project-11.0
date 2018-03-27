@@ -1,0 +1,77 @@
+<odoo>
+
+    <template id="website_sale_delivery.portal_order_page_shipping_tracking" name="Shipping tracking on orders followup"
+              inherit_id="website_sale_stock.portal_order_page_shipping">
+        <xpath expr="//div[@id='picking_info']" position="after">
+            <div t-if="i.carrier_tracking_ref">
+                Tracking:
+                <span t-field="i.carrier_id.name"/>
+                <t t-if="i.carrier_tracking_url">
+                    <a t-att-href="i.carrier_tracking_url" target="_blank">
+                        <span t-field="i.carrier_tracking_ref"/>
+                    </a>
+                </t>
+                <t t-else="">
+                    <span t-field="i.carrier_tracking_ref"/>
+                </t>
+                <a t-attf-href="/my/express_orders/{{i.id}}?{{keep_query()}}">查看详细物流
+                </a>
+
+            </div>
+        </xpath>
+    </template>
+
+
+    <template id="portal_order_cancel_button" name="Quotations order Cancel"
+              inherit_id="sale.portal_my_quotations">
+        <xpath expr="//tr/th[5]" position="after">
+            <th>操作</th>
+        </xpath>
+        <xpath expr="//td/span[@t-field='quotation.amount_total']" position="after">
+            <td>
+                <a t-attf-href="/my/orders_cancel/#{quotation.id}?#{keep_query()}" title="Cancel order">取消订单</a>
+            </td>
+        </xpath>
+    </template>
+
+
+    <template id="portal_sale_order_cancel_button" name="Sale order Cancel"
+              inherit_id="sale.portal_my_orders">
+        <xpath expr="//thead/tr/th[3]" position="replace">
+            <th>订单状态</th>
+            <th>售后状态</th>
+        </xpath>
+
+        <xpath expr="//td[3]" position="after">
+            <td>
+                <t t-if="order.state == 'done' and order.after_done_state">
+                    <span t-field="order.after_done_state"/>
+                </t>
+            </td>
+        </xpath>
+        <xpath expr="//tr/th[4]" position="after">
+            <th>操作</th>
+        </xpath>
+        <xpath expr="//td/span[@t-field='order.amount_total']" position="after">
+            <td>
+                <t t-if="order.after_done_state in ['1','2','3'] or not order.after_done_state">
+                    <t t-if="order.state=='done' and order.after_done_state!='2'">
+                        <a t-attf-href="/my/orders_cancel_1/#{order.id}?#{keep_query()}" title="Cancel order">申请退款</a>
+                    </t>
+                    <t t-if="order.state=='done' and order.after_done_state!='1'">
+                        <a t-attf-href="/my/orders_cancel_2/#{order.id}?#{keep_query()}" title="Cancel order">申请退货</a>
+                    </t>
+                    <t t-if="order.state=='done' and order.after_done_state!='3'">
+                        <a t-attf-href="/my/orders_cancel_3/#{order.id}?#{keep_query()}" title="Cancel order">退货退款</a>
+                    </t>
+                    <t t-if="order.state=='done' and order.after_done_state">
+                        <a t-attf-href="/my/sale_orders_cancel/#{order.id}?#{keep_query()}" title="Cancel order">取消操作
+                        </a>
+                    </t>
+                </t>
+            </td>
+        </xpath>
+    </template>
+
+
+</odoo>

@@ -1,0 +1,22 @@
+<templates>
+
+
+    <div t-name="express_extra_buttons" class="express_extra_buttons">
+
+        <button type="button" t-if='widget.modelName=="stock.picking"'
+                class="btn btn-sm btn-primary sf_express_send">
+            批量发货
+        </button>
+        <button type="button" t-if="widget.modelName=='print.order'"
+                class="btn btn-sm btn-primary sf_express_print">
+            批量打印
+        </button>
+    </div>
+
+    <t t-extend="ListView.buttons">
+        <t t-jquery="div.o_list_buttons" t-operation="append">
+            <t t-call="express_extra_buttons"/>
+        </t>
+    </t>
+
+</templates>

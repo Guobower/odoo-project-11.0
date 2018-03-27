@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="website_payment_return_list">
+            <field name="name">website_payment_return_list</field>
+            <field name="model">payment.transaction</field>
+            <field name="inherit_id" ref="payment.transaction_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_void']" position="after">
+                    <button type="object" name="action_returns_commit" states="refunding" string="确认退款"
+                            class="oe_highlight"/>
+                    <button type="object" name="action_returns_refuse" states="refunding" string="拒绝退款"
+                            class="oe_highlight"/>
+                </xpath>
+                <field name="date_validate" position="after">
+                    <field name="write_date"/>
+                    <field name="return_date"/>
+                    <field name="com_return_date"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

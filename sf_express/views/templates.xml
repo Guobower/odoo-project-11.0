@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <template id="assets_backend" name="sf_express assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link href="/sf_express/static/src/less/sf_express.less" rel="stylesheet"/>
+                <script type="text/javascript" src="/sf_express/static/src/js/sf_express.js"></script>
+                <script type="text/javascript" src="/sf_express/static/src/js/LodopFuncs.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

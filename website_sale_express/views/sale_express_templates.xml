@@ -1,0 +1,178 @@
+<odoo>
+    <template id="portal_my_home_menu_express" name="Portal layout : express menu entries"
+              inherit_id="portal.portal_layout" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'express_orders' or express_order">
+                <a t-if="express_order" t-attf-href="/my/express_orders?{{ keep_query() }}">物流信息</a>
+                <t t-else="">物流信息</t>
+            </li>
+            <li t-if="express_order">
+                <t t-tag="t" t-content="True">物流信息</t>
+                <t t-esc="express_order.carrier_tracking_ref"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_express" name="Portal My Home : express entries" inherit_id="portal.portal_my_home"
+              priority="20">
+        <xpath expr="//ul[hasclass('o_portal_docs')]" position="inside">
+            <li t-if="express_count" class="list-group-item">
+                <span class="badge" t-esc="express_count"/>
+                <a href="/my/express_orders">我的物流</a>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_express_orders" name="My express Orders">
+        <t t-call="portal.portal_layout">
+            <h3>我的物流
+                <t t-call="portal.portal_searchbar"/>
+            </h3>
+            <t t-if="not express_orders">
+                <p>目前没有物流信息</p>
+            </t>
+            <div t-if="express_orders" class="panel panel-default">
+                <div class="table-responsive">
+                    <table class="table table-hover o_portal_my_doc_table">
+                        <thead>
+                            <tr class="active">
+                                <th>发货订单号</th>
+                                <th>物流单号</th>
+                                <th>下单订单号</th>
+                                <th>交货日期</th>
+                                <th>物流类型</th>
+
+                            </tr>
+                        </thead>
+                        <t t-foreach="express_orders" t-as="order">
+                            <tr>
+                                <td>
+                                    <a t-attf-href="/my/express_orders/{{order.id}}?{{keep_query()}}">
+                                        <t t-esc="order.name"/>
+                                    </a>
+                                </td>
+                                <td>
+                                    <t t-if="order.name">
+                                        <t t-esc="order.carrier_tracking_ref"/>
+                                    </t>
+                                </td>
+                                <td>
+                                    <t t-esc="order.origin"/>
+                                </td>
+                                <td>
+                                    <span t-field="order.scheduled_date" t-options="{'widget': 'date'}"/>&amp;nbsp;
+                                    <span class='hidden-xs' t-field="order.scheduled_date"
+                                          t-options="{'time_only': True}"/>
+                                </td>
+                                <td>
+                                    <t t-if="order.name">
+                                        <t t-esc="order.carrier_id.name"/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+                <div t-if="pager" class="o_portal_pager text-center">
+                    <t t-call="portal.pager"/>
+                </div>
+            </div>
+        </t>
+
+    </template>
+
+    <template id="portal_express_order_page" name="My express Info">
+        <t t-call="portal.portal_layout">
+            <div id="optional_placeholder"></div>
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-6 col-xs-9 col-sm-9">
+                                <h4>
+                                    <t t-call='portal.record_pager'/>
+                                    <span>物流信息</span>
+                                    <span t-esc="express_order.carrier_tracking_ref"/>
+                                </h4>
+                            </div>
+
+                            <t t-if="not express_order">
+                                <p>目前没有物流信息</p>
+                            </t>
+                        </div>
+                    </div>
+                    <div t-if="express_order" class="text-center">
+                        <!--product info-->
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>商品</strong>
+                                </div>
+                                <div class="hidden-sm hidden-xs col-md-2 text-right">
+                                    <strong>发货数量</strong>
+                                </div>
+                            </div>
+                            <t t-foreach="express_order.move_lines" t-as="ol">
+                                <div class="row orders_vertical_align">
+                                    <div class="visible-lg col-lg-1 text-center">
+                                        <span t-field="ol.product_id.image_medium"
+                                              t-options="{'widget': 'image', 'class': 'img-rounded', 'style':'width: 48px;height:48px'}"/>
+                                    </div>
+                                    <div id='product_name' class="col-lg-4 col-sm-6 col-xs-3">
+                                        <span t-esc="ol.product_id.name"/>
+                                    </div>
+                                    <div class="col-xs-2 text-right">
+                                        <span t-esc="ol.product_uom_qty"/>
+                                    </div>
+
+                                </div>
+                            </t>
+                        </div>
+
+                        <!--express info-->
+                        <table>
+                            <t t-if="not express_order.logistics_id">
+                                <p>目前没有物流信息</p>
+                            </t>
+                            <t t-else="">
+                                <t t-foreach="express_order.logistics_id" t-as="express">
+                                    <tr>
+                                        <td>
+                                            <span t-esc="express.date" t-options="{'widget': 'datetime'}"/>
+                                        </td>
+                                        <td>|</td>
+                                        <td>
+                                            <t t-esc="express.description"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="portal_order_error" name="Order error/warning display">
+        <div class="row mr16">
+            <div t-attf-class="'col-md-12 mr16 ml16 alert alert-dismissable' #{'alert-danger' if error else 'alert-warning'}">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                <t t-if="error == 'generic'" name="generic">
+                    There was an error processing this page.
+                </t>
+            </div>
+        </div>
+    </template>
+
+    <template id="portal_order_success" name="Order success display">
+        <div class="row mr16">
+            <div class="col-md-12 mr16 ml16 alert alert-dismissable alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+            </div>
+        </div>
+    </template>
+
+
+</odoo>

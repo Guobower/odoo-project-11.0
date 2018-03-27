@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="send_express_order_form">
+            <field name="name">send_express_order_form</field>
+            <field name="model">send.express.order</field>
+            <field name="inherit_id" ref="stock_logistics.stock_logistics_wizard_form"/>
+            <field name="arch" type="xml">
+                <field name="api" position="after">
+                    <field name="payment_method"
+                           attrs="{'invisible':[('express_id','!=',%(sf_express.express_1)d)]}"/>
+                    <field name="tb_quantity"
+                           attrs="{'invisible':[('express_id','!=',%(sf_express.express_1)d)]}"/>
+                    <field name="express_order_type"
+                           attrs="{'invisible':[('express_id','!=',%(sf_express.express_1)d)]}"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
