@@ -7,7 +7,9 @@ odoo-project
 
 python 规范 基本要求：
 
-代码每行不超过80字符； 注释的行长都不超过72字符； 每级缩进都使用四个空格。 其他规范参考： http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/contents/
+代码每行不超过80字符； 注释的行长都不超过72字符； 每级缩进都使用四个空格。
+
+其他规范参考： http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/contents/
 
 git 规范 标示 文件名/模块名：内容。
 
