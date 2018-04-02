@@ -16,10 +16,10 @@
             <field name="auto_confirm">confirm_so</field>
             <field name="pre_msg"><![CDATA[
 <p>You will be redirected to the weixin website after clicking on the payment button.</p>]]></field>
-            <field name="weixin_appid">wx426b3015555a46be</field>
-            <field name="weixin_mch_id">1225312702</field>
-            <field name="weixin_key">e10adc3949ba59abbe56e057f20f883e</field>
-            <field name="weixin_secret">01c6d59a3f9024db6336662ac95c8e74</field>
+            <field name="weixin_appid"></field>
+            <field name="weixin_mch_id"></field>
+            <field name="weixin_key"></field>
+            <field name="weixin_secret"></field>
             <field name="ip_address">dummy</field>
             <field name="payment_icon_ids" eval="[(6,0,[ref('website_payment_weixin.payment_icon_cc_weixin')])]"/>
         </record>
